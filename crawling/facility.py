@@ -1,4 +1,4 @@
-from util import util
+from util.util import *
 import os.path
 from bs4 import BeautifulSoup
 from connection import connection
@@ -12,20 +12,19 @@ def crawlingFactory(link, filepath):
         print("Start crawling factory: " + link)
         abPath = os.path.realpath(filepath)
         if(os.path.isfile(abPath) == False):
-            util.writeHtmlFile(link,abPath)
-        html = util.readHtmlFile(abPath)
+            writeHtmlFile(link,abPath)
+        html = readHtmlFile(abPath)
 
         soup = BeautifulSoup(html,"html.parser")
         for link in soup.find_all('a', attrs={'class': 'tendonviwebngoai'}):
             name = str(link.string)
-
             key = "AIzaSyAEHOJH4Oi0FWuB9rlQOBlf4eQ2kgXLFo4"
-            lat = util.getLocation(key,name,"lat")
-            lgn = util.getLocation(key,name,"lng")
+            lat = getLocation(key,name,"lat")
+            lgn = getLocation(key,name,"lng")
 
             if lat and lgn:
 
-                google_detail_html = util.getHtml('https://www.google.com/search?q=' + name)
+                google_detail_html = getHtml('https://www.google.com/search?q=' + name)
                 detail_soup = BeautifulSoup(google_detail_html,"html.parser")
 
                 address = detail_soup.find('span', attrs={'class': 'LrzXr'})
@@ -35,9 +34,10 @@ def crawlingFactory(link, filepath):
                         address = str(address.string)
                         lat = float(str(lat))
                         lgn = float(str(lgn))
-                        image = getImage(name)
-                        if image:
-                            connection.insert(name,address,lat,lgn,phone,image)
+                        # image = getImage(name)
+                        # if image:
+                            # connection.insert(name,address,lat,lgn,phone,image)
+
         print("Crawling Factory Successfully")
     except: print("error at crawling Facility")
 

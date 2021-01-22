@@ -1,5 +1,5 @@
 import mysql.connector
-# install package mysql python connector
+# pip install mysql-connector-python
 def connect():
     conn = mysql.connector.connect(host='34.87.101.18',
                                     database='healthcaredb',
